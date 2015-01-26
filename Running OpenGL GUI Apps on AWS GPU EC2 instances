@@ -1,0 +1,25 @@
+    Centos AMI - ami-9eaa45e9 (6.4 with updates)
+    sudo yum groupinstall "Desktop" "General Purpose Desktop" "X Window System" "Fonts"
+    copy across VirtualGL and TurboVNC files
+    sudo yum install -y libXaw libXmu libXt xauth xdpyinfo glx-utils libXp xterm xorg-x11-xdm  xorg-x11-fonts-100dpi xorg-x11-fonts-ISO8859-9-100dpi xorg-x11-fonts-misc xorg-x11-fonts-Type1
+    sudo rpm -i *.rpm
+    copy NVIDIA drivers over
+    chmod +x NVIDIA-Linux-x86_64-343.36.run
+    sudo ./NVIDIA-Linux-x86_64-343.36.run -s
+    sudo nvidia-xconfig --use-display-device=None
+    sudo /opt/VirtualGL/bin/vglserver_config -config +s +f +t
+    /etc/X11/xorg.conf should include this:
+    Section "Device"
+    Identifier "Device0"
+    Driver "nvidia"
+    VendorName "NVIDIA Corporation"
+    BoardName "GRID K520"
+    BusID "PCI:0:3:0"
+    EndSection
+
+To start the 3D x server:
+sudo xinit
+To start the VNC X server:
+/opt/TurboVNC/bin/vncserver
+To run OpenGL applications via VNC (eg glxgears):
+/opt/VirtualGL/bin/vglrun glxgears
